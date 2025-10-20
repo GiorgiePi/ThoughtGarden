@@ -1,0 +1,448 @@
+:root {
+  --pink: #eac7c7;
+  --vanilla: #fdf6ec;
+  --sage: #c7e9b0;
+  --lilac: #dcd6f7;
+  --grass: #b7d3a8;
+  --sky1: #dcd6f7;
+  --sky2: #fdf6ec;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: linear-gradient(to top, var(--sky1), var(--sky2));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.logo{
+    width: 300px;
+}
+
+main {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+}
+/* --- FORM COMPATTO --- */
+#thoughtForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+/* Campo input */
+#thoughtInput {
+  width: 230px;
+  padding: 6px 10px;
+  border-radius: 18px;
+  border: 1px solid #d0d0d0;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+#thoughtInput:focus {
+  border-color: #b6db9c;
+  box-shadow: 0 0 5px rgba(198, 228, 180, 0.4);
+}
+
+/* --- GRUPPO BOTTONI --- */
+.btn-group {
+  display: flex;
+  gap: 6px;
+}
+
+/* --- Bottoni base --- */
+.btn {
+  border: none;
+  border-radius: 18px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Bottone “Pianta” */
+.plant-btn {
+  background-color: #c7e9b0;
+  color: #2b2b2b;
+}
+
+.plant-btn:hover {
+  background-color: #b6db9c;
+  transform: scale(1.05);
+}
+
+/* Bottone “Reset” */
+.reset-btn {
+  background-color: #eac7c7;
+  color: #2b2b2b;
+}
+
+.reset-btn:hover {
+  background-color: #dfb1b1;
+  transform: scale(1.05);
+}
+
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  background: linear-gradient(to bottom, var(--sky2), var(--sky1));
+  z-index: 0;
+}
+
+.ground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 25%;
+  background: var(--grass);
+  border-top-left-radius: 50% 20px;
+  border-top-right-radius: 50% 20px;
+  z-index: 1;
+  box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+
+
+#garden {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  overflow: hidden; /* i fiori non escono dai bordi */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* 🌸 --- FIORI INTERATTIVI --- */
+
+/* 🌸 --- FIORI INTERATTIVI (VERSIONE FINALE) --- */
+/* ---- FIORI SCALABILI CON VARIABILI ---- */
+.flower {
+  --size: 70px;                /* dimensione base del fiore */
+  --center: calc(var(--size) * 0.30);
+  --petalW: calc(var(--size) * 0.26);
+  --petalH: calc(var(--size) * 0.36);
+  --petalOffset: calc(var(--size) * 0.14);
+
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  cursor: pointer;
+  perspective: 800px;
+  animation: float 8s ease-in-out infinite;
+  transform-origin: center bottom;
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+
+.flower-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s ease;
+  transform-style: preserve-3d;
+}
+.flower.flipped .flower-inner { transform: rotateY(180deg); }
+
+.flower-front, .flower-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Petali proporzionali */
+.petal {
+  position: absolute;
+  width: var(--petalW);
+  height: var(--petalH);
+  border-radius: 50% 50% 0 0;
+  transform-origin: center bottom;
+  opacity: 0.95;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+  transition: filter 0.3s ease;
+}
+.flower:hover .petal { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25)); }
+
+
+
+/* Retro con messaggio */
+.flower-back {
+  background: #ffffffee;
+  transform: rotateY(180deg);
+  color: #333;
+  font-size: calc(var(--size) * 0.14);
+  line-height: 1.2;
+  text-align: center;
+  padding: calc(var(--size) * 0.11);
+  box-shadow: 0 0 4px rgba(0,0,0,0.15);
+  font-weight: 500;
+  overflow-wrap: break-word;
+}
+
+/* Fluttuazione */
+@keyframes float{
+  0%{transform:translateY(0) rotate(0deg)}
+  25%{transform:translateY(-7px) rotate(2deg)}
+  50%{transform:translateY(-10px) rotate(-2deg)}
+  75%{transform:translateY(-5px) rotate(1deg)}
+  100%{transform:translateY(0) rotate(0deg)}
+}
+
+
+form {
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+input {
+  flex: 1 1 60%;
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  min-width: 200px;
+}
+
+button {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+button[type="submit"] {
+  background: var(--sage);
+}
+
+button[type="submit"]:hover {
+  background: #a3d49f;
+}
+
+#resetBtn {
+  background: var(--pink);
+}
+
+#resetBtn:hover {
+  background: #d6a5a5;
+}
+
+footer {
+  background: linear-gradient(to top, #b7d3a8, #c7e9b0);
+  color: #745858;
+  padding: 0.1rem 0;
+  text-align: center;
+  font-size: 0.7rem;
+  border-top: 2px solid rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+
+
+
+
+
+
+
+
+/* 🌿 --- VERSIONE MOBILE (max 600px) --- */
+@media (max-width: 600px) {
+  body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* --- Logo più piccolo --- */
+  .logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 0.3rem;
+  }
+
+  /* --- Titolo ancora più bilanciato --- */
+  h1 {
+    font-size: 16px;
+    margin-bottom: 0.2rem;
+  }
+
+  /* --- Giardino un po’ più alto per far vedere i fiori --- */
+  #garden {
+    height: 68vh;
+    overflow: hidden;
+  }
+
+
+  /* Rimuove eventuali stacchi tra sezioni */
+  section, main {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  /* --- Footer aderente --- */
+  footer {
+    margin-top: 0;
+    padding-top: 0.5rem;
+    font-size: 0.5rem;
+  }
+
+
+  /* --- Fiori ridotti e più ariosi --- */
+  .flower {
+    width: 35px;
+    height: 35px;
+  }
+
+  .center {
+    width: 14px;
+    height: 14px;
+  }
+
+  .flower-back {
+    font-size: 8.5px;
+  }
+
+  /* --- Form compatto --- */
+  #thoughtForm {
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 0.4rem;
+
+  }
+
+  #thoughtInput {
+    width: 100px;
+    padding: 4px 6px;
+    font-size: 11px;
+    border-radius: 14px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 5px;
+  }
+
+  .btn {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 14px;
+  }
+  form{
+width: 220px;
+
+  }
+}
+
+/* 🌿 --- TABLET E IPAD --- */
+@media (min-width: 601px) and (max-width: 1024px) {
+  body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* --- Header, logo e titolo --- */
+  .logo {
+    width: 180px;
+    margin-bottom: 0.4rem;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  /* --- Giardino --- */
+  #garden {
+    height: 70vh;
+    margin: 0 auto;
+    overflow: hidden;
+    padding-bottom: 0;          /* evita stacco */
+  }
+
+  /* Rimuove margini o padding extra sotto il giardino */
+  section, main {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  /* --- Footer attaccato --- */
+  footer {
+    margin-top: 0;
+    padding-top: 0.5rem;
+  }
+
+  /* --- Fiori medi --- */
+  .flower {
+    --size: 55px;
+    animation-duration: 8s;
+  }
+
+  .flower-back {
+    font-size: calc(var(--size) * 0.15);
+    padding: calc(var(--size) * 0.1);
+  }
+
+  /* --- Form proporzionato --- */
+  #thoughtForm {
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 0.6rem;
+  }
+
+  #thoughtInput {
+    width: 200px;
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 18px;
+  }
+
+  .btn-group {
+    gap: 8px;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 18px;
+  }
+}
